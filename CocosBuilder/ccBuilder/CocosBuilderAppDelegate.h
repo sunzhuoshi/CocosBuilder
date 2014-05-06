@@ -55,6 +55,15 @@ enum {
 enum {
     kCCBAlignHorizontalCenter,
     kCCBAlignVerticalCenter,
+    kCCBAlignLeft,
+    kCCBAlignRight,
+    kCCBAlignTop,
+    kCCBAlignBottom,
+    kCCBAlignAcross,
+    kCCBAlignDown,
+    kCCBAlignSameWidth,
+    kCCBAlignSameHeight,
+    kCCBAlignSameSize,
 };
 
 enum {
@@ -67,6 +76,7 @@ enum {
 
 @class CCBDocument;
 @class ProjectSettings;
+@class CCBHTTPServer;
 @class AssetsWindowController;
 @class PlugInManager;
 @class ResourceManager;
@@ -88,6 +98,7 @@ enum {
 @class MainToolbarDelegate;
 @class PlayerConnection;
 @class CCBSplitHorizontalView;
+@class AboutWindow;
 
 @interface CocosBuilderAppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 {
@@ -156,6 +167,9 @@ enum {
     BOOL defaultCanvasSize;
     
     IBOutlet NSMenuItem* menuItemJSControlled;
+    IBOutlet NSMenuItem* menuItemSafari;
+    IBOutlet NSMenuItem* menuItemChrome;
+    IBOutlet NSMenuItem* menuItemFirefox;
     
     // Resource manager
     ResourceManager* resManager;
@@ -201,6 +215,9 @@ enum {
     // Help window
     HelpWindow* helpWindow;
     APIDocsWindow* apiDocsWindow;
+    
+    // About window
+    AboutWindow* aboutWindow;
     
     // Animation playback
     BOOL playingBack;
@@ -266,6 +283,8 @@ enum {
 - (void) closeLastDocument;
 - (void) openFile:(NSString*) fileName;
 - (void) openJSFile:(NSString*) fileName;
+- (void) openJSFile:(NSString*) fileName highlightLine:(int)line;
+- (void) resetJSFilesLineHighlight;
 
 // Menu options
 - (void) dropAddSpriteNamed:(NSString*)spriteFile inSpriteSheet:(NSString*)spriteSheetFile at:(CGPoint)pt parent:(CCNode*)parent;
@@ -311,6 +330,7 @@ enum {
 - (void) reloadResources;
 - (IBAction)menuAddStickyNote:(id)sender;
 - (IBAction) menuCleanCacheDirectories:(id)sender;
+- (IBAction)menuAbout:(id)sender;
 
 // Undo / Redo
 - (void) updateDirtyMark;
@@ -326,6 +346,7 @@ enum {
 - (void) publisher:(CCBPublisher*)publisher finishedWithWarnings:(CCBWarnings*)warnings;
 - (IBAction)runProject:(id)sender;
 - (IBAction) menuPublishProjectAndRun:(id)sender;
+- (IBAction) menuPublishProjectAndRunInBrowser:(id)sender;
 
 // For warning messages
 - (void) modalDialogTitle: (NSString*)title message:(NSString*)msg;
