@@ -63,10 +63,12 @@
     NSString* publishDirectory;
     NSString* publishDirectoryAndroid;
     NSString* publishDirectoryHTML5;
+    NSString* publishDirectoryAllInOne;
     
     BOOL publishEnablediPhone;
     BOOL publishEnabledAndroid;
     BOOL publishEnabledHTML5;
+    BOOL publishEnabledAllInOne;
     
     BOOL publishResolution_;
     BOOL publishResolution_hd;
@@ -110,10 +112,12 @@
 @property (nonatomic,assign) BOOL publishEnablediPhone;
 @property (nonatomic,assign) BOOL publishEnabledAndroid;
 @property (nonatomic,assign) BOOL publishEnabledHTML5;
+@property (nonatomic,assign) BOOL publishEnabledAllInOne;
 
 @property (nonatomic, copy) NSString* publishDirectory;
 @property (nonatomic, copy) NSString* publishDirectoryAndroid;
 @property (nonatomic, copy) NSString* publishDirectoryHTML5;
+@property (nonatomic, copy) NSString* publishDirectoryAllInOne;
 
 @property (nonatomic,assign) BOOL publishResolution_;
 @property (nonatomic,assign) BOOL publishResolution_hd;

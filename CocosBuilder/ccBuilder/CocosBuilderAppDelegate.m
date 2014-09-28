@@ -2168,7 +2168,8 @@ static BOOL hideAllToNextSeparator;
 {
     if (!projectSettings.publishEnabledAndroid
         && !projectSettings.publishEnablediPhone
-        && !projectSettings.publishEnabledHTML5)
+        && !projectSettings.publishEnabledHTML5
+        && !projectSettings.publishDirectoryAllInOne)
     {
         [self modalDialogTitle:@"Published Failed" message:@"There are no configured publish target platforms. Please check your Publish Settings."];
         return;

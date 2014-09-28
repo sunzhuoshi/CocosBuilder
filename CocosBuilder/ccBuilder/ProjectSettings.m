@@ -114,9 +114,11 @@
 @synthesize publishDirectory;
 @synthesize publishDirectoryAndroid;
 @synthesize publishDirectoryHTML5;
+@synthesize publishDirectoryAllInOne;
 @synthesize publishEnablediPhone;
 @synthesize publishEnabledAndroid;
 @synthesize publishEnabledHTML5;
+@synthesize publishEnabledAllInOne;
 @synthesize publishResolution_;
 @synthesize publishResolution_hd;
 @synthesize publishResolution_ipad;
@@ -149,6 +151,24 @@
 @synthesize versionStr;
 @synthesize needRepublish;
 
+- (void)didChangeValueForKey:(NSString *)key
+{
+    [super didChangeValueForKey:key];
+    if ([key isEqualToString:@"publishEnablediPhone"] ||
+        [key isEqualToString:@"publishEnabledAndroid"] ||
+        [key isEqualToString:@"publishEnabledHTML5"]) {
+        if ([[self valueForKey:key] boolValue] && self.publishEnabledAllInOne) {
+            self.publishEnabledAllInOne = NO;
+        }
+        
+    }
+    else if ([key isEqualToString:@"publishEnabledAllInOne"] && self.publishEnabledAllInOne) {
+        self.publishEnablediPhone = NO;
+        self.publishEnabledAndroid = NO;
+        self.publishEnabledHTML5 = NO;
+    }
+}
+
 - (id) init
 {
     self = [super init];
@@ -171,6 +191,7 @@
     self.publishEnablediPhone = YES;
     self.publishEnabledAndroid = NO;
     self.publishEnabledHTML5 = YES;
+    self.publishEnabledAllInOne = NO;
     
     self.publishResolution_ = YES;
     self.publishResolution_hd = YES;
@@ -220,14 +241,17 @@
     self.publishDirectory = [dict objectForKey:@"publishDirectory"];
     self.publishDirectoryAndroid = [dict objectForKey:@"publishDirectoryAndroid"];
     self.publishDirectoryHTML5 = [dict objectForKey:@"publishDirectoryHTML5"];
+    self.publishDirectoryAllInOne = [dict objectForKey:@"publishDirectoryAllInOne"];
     
     if (!publishDirectory) self.publishDirectory = @"";
     if (!publishDirectoryAndroid) self.publishDirectoryAndroid = @"";
     if (!publishDirectoryHTML5) self.publishDirectoryHTML5 = @"";
+    if (!publishDirectoryAllInOne) self.publishDirectoryAllInOne = @"";
     
     self.publishEnablediPhone = [[dict objectForKey:@"publishEnablediPhone"] boolValue];
     self.publishEnabledAndroid = [[dict objectForKey:@"publishEnabledAndroid"] boolValue];
     self.publishEnabledHTML5 = [[dict objectForKey:@"publishEnabledHTML5"] boolValue];
+    self.publishEnabledAllInOne = [[dict objectForKey:@"publishEnabledAllInOne"] boolValue];
     
     self.publishResolution_ = [[dict objectForKey:@"publishResolution_"] boolValue];
     self.publishResolution_hd = [[dict objectForKey:@"publishResolution_hd"] boolValue];
@@ -325,11 +349,12 @@
     [dict setObject:publishDirectory forKey:@"publishDirectory"];
     [dict setObject:publishDirectoryAndroid forKey:@"publishDirectoryAndroid"];
     [dict setObject:publishDirectoryHTML5 forKey:@"publishDirectoryHTML5"];
+    [dict setObject:publishDirectoryAllInOne forKey:@"publishDirectoryAllInOne"];
     
     [dict setObject:[NSNumber numberWithBool:publishEnablediPhone] forKey:@"publishEnablediPhone"];
     [dict setObject:[NSNumber numberWithBool:publishEnabledAndroid] forKey:@"publishEnabledAndroid"];
     [dict setObject:[NSNumber numberWithBool:publishEnabledHTML5] forKey:@"publishEnabledHTML5"];
-    
+    [dict setObject:[NSNumber numberWithBool:publishEnabledAllInOne] forKey:@"publishEnabledAllInOne"];
     
     [dict setObject:[NSNumber numberWithBool:publishResolution_] forKey:@"publishResolution_"];
     [dict setObject:[NSNumber numberWithBool:publishResolution_hd] forKey:@"publishResolution_hd"];

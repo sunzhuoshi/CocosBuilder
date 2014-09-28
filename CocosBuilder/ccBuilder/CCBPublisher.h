@@ -31,6 +31,7 @@ enum {
     kCCBPublisherTargetTypeHTML5,
     kCCBPublisherTargetTypeIPhone,
     kCCBPublisherTargetTypeAndroid,
+    kCCBPublisherTargetTypeAllInOne
 };
 
 @interface CCBPublisher : NSObject

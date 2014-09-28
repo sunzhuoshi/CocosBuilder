@@ -540,10 +540,16 @@
         // Check if sprite sheet needs to be re-published
         for (NSString* res in publishForResolutions)
         {
-            NSArray* srcDirs = [NSArray arrayWithObjects:
-                                [projectSettings.tempSpriteSheetCacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"resources-%@", res]],
-                                projectSettings.tempSpriteSheetCacheDirectory,
-                                nil];
+            NSArray* srcDirs;
+            if (projectSettings.publishEnabledAllInOne) {
+                srcDirs = [NSArray arrayWithObject: projectSettings.tempSpriteSheetCacheDirectory];
+            }
+            else {
+                srcDirs = [NSArray arrayWithObjects:
+                                        [projectSettings.tempSpriteSheetCacheDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"resources-%@", res]],
+                                        projectSettings.tempSpriteSheetCacheDirectory,
+                                        nil];
+            }
             
             NSString* spriteSheetFile = NULL;
             if (publishToSingleResolution) spriteSheetFile = outDir;
@@ -697,7 +703,7 @@
         return;
     }
     
-    if (targetType == kCCBPublisherTargetTypeIPhone || targetType == kCCBPublisherTargetTypeAndroid)
+    if (targetType == kCCBPublisherTargetTypeIPhone || targetType == kCCBPublisherTargetTypeAndroid || targetType == kCCBPublisherTargetTypeIPhone)
     {
         // Generate main.js file
         
@@ -1026,6 +1032,17 @@
                 // Publish files
                 if (![self publishAllToDirectory:publishDir]) return NO;
             }
+        }
+        
+        // All in one
+        if (projectSettings.publishDirectoryAllInOne && projectSettings.publishDirectoryAllInOne)
+        {
+            targetType = kCCBPublisherTargetTypeAllInOne;
+            publishForResolutions = [NSArray arrayWithObject:@""]; // no resolution used
+            publishToSingleResolution = YES;
+            NSString* publishDir = [projectSettings.publishDirectoryAllInOne absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            
+            if (![self publishAllToDirectory:publishDir]) return NO;
         }
         
     }

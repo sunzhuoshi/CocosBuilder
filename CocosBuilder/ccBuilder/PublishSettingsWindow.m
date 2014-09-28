@@ -64,6 +64,9 @@
                 {
                     projectSettings.publishDirectoryHTML5 = relDirName;
                 }
+                else if (type == 3) {
+                    projectSettings.publishDirectoryAllInOne = relDirName;
+                }
             }
             
             [[[CCDirector sharedDirector] view] unlockOpenGLContext];
