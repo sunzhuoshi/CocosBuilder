@@ -905,14 +905,34 @@
         NSFileManager *fm = [NSFileManager defaultManager];
         NSString* publishDir;
         
-        publishDir = [projectSettings.publishDirectory absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
-        [fm removeItemAtPath:publishDir error:NULL];
+        // Alert before republish, for code may exist in publish directory in all in one mode
+        NSAlert* alert = [NSAlert alertWithMessageText:@"WARNING! Republish needed, continue?" defaultButton:@"Yes" alternateButton:@"No" otherButton:NULL informativeTextWithFormat:@"All your data in publish directory will be removed! Please back it up or commit it if needed."];
+        NSInteger result = [alert runModal];
         
-        publishDir = [projectSettings.publishDirectoryAndroid absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
-        [fm removeItemAtPath:publishDir error:NULL];
+        if (result != NSAlertDefaultReturn)
+        {
+            return NO;
+        }
+        // only remove if enabled and non-empty publish sub-directory
+        if (projectSettings.publishEnablediPhone && 0 < projectSettings.publishDirectory.length) {
+            publishDir = [projectSettings.publishDirectory absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            [fm removeItemAtPath:publishDir error:NULL];
+        }
         
-        publishDir = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
-        [fm removeItemAtPath:publishDir error:NULL];
+        if (projectSettings.publishEnabledAndroid && 0 < projectSettings.publishDirectoryAndroid.length) {
+            publishDir = [projectSettings.publishDirectoryAndroid absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            [fm removeItemAtPath:publishDir error:NULL];
+        }
+        
+        if (projectSettings.publishEnabledHTML5 && 0 < projectSettings.publishDirectoryHTML5) {
+            publishDir = [projectSettings.publishDirectoryHTML5 absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            [fm removeItemAtPath:publishDir error:NULL];
+        }
+        
+        if (projectSettings.publishEnabledAllInOne && 0 < projectSettings.publishDirectoryAllInOne) {
+            publishDir = [projectSettings.publishDirectoryAllInOne absolutePathFromBaseDirPath:[projectSettings.projectPath stringByDeletingLastPathComponent]];
+            [fm removeItemAtPath:publishDir error:NULL];
+        }
     }
     
     if (!runAfterPublishing)

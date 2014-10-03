@@ -313,7 +313,12 @@
     }
     else
     {
-       self.needRepublish = NO;
+        if ([[dict objectForKey:@"needRepublish"] boolValue]) {
+            self.needRepublish = YES;
+        }
+        else {
+            self.needRepublish = NO;
+        }
     }
     
     return self;
